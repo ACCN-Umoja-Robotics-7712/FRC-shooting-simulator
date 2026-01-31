@@ -1,12 +1,14 @@
 import pygame
 import math
+from ShotFinder import find_shot_solutions
 
 pygame.init()
+pygame.font.init()
 
 # Window settings
 WIDTH, HEIGHT = 1302, 634
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Triangle Player with Hexagon")
+pygame.display.set_caption("FRC 2026 Shooting Simulator")
 
 clock = pygame.time.Clock()
 
@@ -19,6 +21,8 @@ RED = (255, 0, 0)
 player_image_original = pygame.image.load(
     "images/Red_triangle.png"
 ).convert_alpha()
+
+
 
 # --- IMPORTANT ---
 # If your triangle image points UP by default, use -90
@@ -34,6 +38,8 @@ rotation_speed = 3  # degrees per frame
 # Hexagon settings
 HEX_CENTER = (WIDTH // 2, HEIGHT // 2)
 HEX_RADIUS = 94
+
+
 
 # Heading line
 LINE_LENGTH = 1000000
@@ -105,6 +111,8 @@ while running:
     # --- Heading line ---
     # Player center
     player_center = pygame.Vector2(rotated_rect.center)
+    hex_center_vec = pygame.Vector2(HEX_CENTER)
+    distance_px = hex_center_vec.distance_to(player_center)
 
     # Heading direction (RIGHT = forward)
     angle_rad = math.radians(player_angle)
@@ -113,12 +121,10 @@ while running:
         math.cos(angle_rad),
         -math.sin(angle_rad)
     )
-
     # Find triangle tip by moving from center to rect edge
     line_start = player_center + direction * (rotated_rect.width / 2)
 
-    line_end = line_start + direction * LINE_LENGTH
-
+    line_end = HEX_CENTER
     pygame.draw.line(
         screen,
         RED,
@@ -126,6 +132,9 @@ while running:
         line_end,
         10
     )
+    font = pygame.font.SysFont("arial", 15)
+    text = font.render(f"Distance to hub (m): {round(distance_px * 0.025, 2)}", True, (0, 0, 0))
+    screen.blit(text, (20, 20))
     
 
     pygame.display.flip()
