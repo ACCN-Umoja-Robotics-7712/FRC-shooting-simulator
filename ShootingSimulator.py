@@ -10,7 +10,7 @@ pygame.font.init()
 # Window settings
 WIDTH, HEIGHT = 1302, 634
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("FRC 2026 Shooting Simulator - Optimized")
+pygame.display.set_caption("FRC 2026 Shooting Simulator - REBUILT")
 
 clock = pygame.time.Clock()
 
@@ -19,9 +19,12 @@ LIGHT_GRAY = (200, 200, 200)
 DARK_GRAY = (80, 80, 80)
 RED = (255, 0, 0)
 BLACK = (0, 0, 0)
+BLUE = (0, 201, 255)
+GREEN = (0, 255, 0)
+YELLOW = (255, 255, 0)
 
 # FRC parameters
-ROBOT_HEIGHT = 0.5
+ROBOT_HEIGHT = 0.51
 HUB_HEIGHT = 2.5
 HUB_RADIUS = 0.3
 PIXELS_PER_METER = 100
@@ -145,6 +148,7 @@ ideal_angle = None
 ideal_speed = None
 
 while running:
+    screen.fill((245, 245, 245))
     clock.tick(60)
     
     # Handle events
@@ -171,11 +175,9 @@ while running:
     if keys[pygame.K_RIGHT]:
         player_angle -= rotation_speed
     
-    # Draw
-    screen.fill(LIGHT_GRAY)
-    
+    # Draw    
     # Draw hexagon (HUB)
-    pygame.draw.polygon(screen, DARK_GRAY, hexagon_points(HEX_CENTER, HEX_RADIUS), 10)
+    pygame.draw.polygon(screen, (7, 204, 168), hexagon_points(HEX_CENTER, HEX_RADIUS), 10)
     
     # Draw player
     rotated_image, rotated_rect = get_rotated_image(
@@ -196,18 +198,19 @@ while running:
         last_distance = distance_m
     
     # Draw line to hub
-    pygame.draw.line(screen, RED, player_center, HEX_CENTER, 3)
-    pygame.draw.circle(screen, RED, HEX_CENTER, 5)
+    pygame.draw.line(screen, GREEN, player_center, HEX_CENTER, 3)
+    pygame.draw.circle(screen, GREEN, HEX_CENTER, 5)
     
     # Display text
     font = pygame.font.SysFont("Arial", 20, bold=True)
     
-    distance_text = font.render(f"Distance: {distance_m:.2f} m", True, BLACK)
+    distance_text = font.render(f"Distance: {distance_m:.2f} m", True, BLUE)
     screen.blit(distance_text, (20, 20))
-    
+    angle = 0
     if ideal_angle is not None:
-        angle_text = font.render(f"Launch Angle: {ideal_angle:.1f}°", True, BLACK)
-        speed_text = font.render(f"Launch Speed: {ideal_speed:.2f} m/s", True, BLACK)
+        
+        angle_text = font.render(f"Launch Angle: {ideal_angle:.1f}°", True, BLUE)
+        speed_text = font.render(f"Launch Speed: {ideal_speed:.2f} m/s", True, BLUE)
     else:
         angle_text = font.render("Launch Angle: ---", True, BLACK)
         speed_text = font.render("Launch Speed: ---", True, BLACK)
@@ -215,12 +218,8 @@ while running:
     screen.blit(angle_text, (20, 50))
     screen.blit(speed_text, (20, 80))
     
-    # FPS display
-    fps_text = font.render(f"FPS: {clock.get_fps():.1f}", True, BLACK)
-    screen.blit(fps_text, (WIDTH - 150, 20))
-    
     # Instructions
-    instructions = font.render("WASD: Move | Arrows: Rotate | ESC: Quit", True, BLACK)
+    instructions = font.render("WASD: Move | Arrows: Rotate | ESC: Quit", True, RED)
     screen.blit(instructions, (20, HEIGHT - 30))
     
     # Keep player in bounds

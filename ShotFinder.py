@@ -49,8 +49,8 @@ def find_ideal_shot(
     min_sep = np.deg2rad(min_angle_separation_deg)
 
     solutions = []
-    theta_guesses = np.linspace(theta_min, theta_max, 15)
-    v_guesses = np.linspace(2.0, v_max, 15)
+    theta_guesses = np.linspace(theta_min, theta_max, 10)
+    v_guesses = np.linspace(2.0, v_max, 10)
 
     for th0 in theta_guesses:
         for v0 in v_guesses:
